@@ -10,7 +10,7 @@ sequelize.authenticate()
 .then(function(){
     console.log("Conexão com banco OK")
 }).catch(function(){
-    console.log("Erro de conexão com BD")
+    console.log("Erro de conexão com DB")
 });
 
 module.exports = sequelize;

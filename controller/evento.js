@@ -4,16 +4,38 @@ var router = express.Router();
 const Evento = require('../models/Eventos');
 
 //LISTAR TODOS OS EVENTOS
-router.get("/listar-todos", async (req, res) => {
+router.get("/listar-todos/:page", async (req, res) => {
+
+    const { page = 1 } = req.params;
+
+    const limit = 6;
+    var lastPage = 1;
+
+    const countEvent = await Evento.count();
+    
+    if(countEvent === null){
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Erro: Nenhum evento encontrado!"
+        });
+    }else{
+        lastPage = Math.ceil(countEvent / limit);
+
+    }
 
     await Evento.findAll({
           attributes: ['id_evento','cidade_evento', 'status_evento', 'data_evento', 'previsao_evento'],
-          order: [['data_evento','DESC']]
+          order: [['data_evento','DESC']],
+          offset: Number((page * limit)-limit),
+          limit: limit
     })
     .then((listar_todos) => {
         return res.json({
             erro: false,
-            listar_todos
+            listar_todos,
+            countEvent,
+            lastPage,
+            
         })
     }).catch(() => {
         return res.status(400).json({
@@ -64,7 +86,7 @@ router.get("/evento/:id_evento", async (req, res) => {
     }).catch(() => {
         return res.status(400).json({
             erro: true,
-            mensagem: "Nenhum registro encontrado"
+            mensagem: "Nenhum registro encontrado!"
         });
     })
     
@@ -97,7 +119,7 @@ router.delete("/evento/:id_evento", async (req, res) => {
         .then(() => {
             return res.json({
                 erro: false,
-                mensagem: "Evento apagado com sucesso"
+                mensagem: "Evento apagado com sucesso!"
             });
         }).catch(() => {
             return res.status(400).json({
