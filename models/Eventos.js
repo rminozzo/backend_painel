@@ -44,6 +44,10 @@ const Evento = db.define('eventos',{
     previsao_evento:{
         type: Sequelize.DATE,
         allowNull: false
+    },
+    teste_evento:{
+        type: Sequelize.STRING,
+        allowNull: false
     }
 
 });
