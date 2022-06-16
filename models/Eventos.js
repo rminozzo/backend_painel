@@ -34,7 +34,7 @@ const Evento = db.define('eventos',{
         allowNull: true
     },
     data_evento:{
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: false
     },
     protocolo_evento:{
@@ -42,13 +42,9 @@ const Evento = db.define('eventos',{
         allowNull: false
     },
     previsao_evento:{
-        type: Sequelize.DATE,
-        allowNull: false
-    },
-    teste_evento:{
         type: Sequelize.STRING,
         allowNull: false
-    }
+    },
 
 });
 
