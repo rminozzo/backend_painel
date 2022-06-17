@@ -51,7 +51,7 @@ router.post("/evento", async (req, res) => {
         status_evento, cidade_evento, ponto_evento,
         energia_evento, endereco_evento,
         afeta_evento, data_evento,
-        protocolo_evento, previsao_evento, teste_evento
+        protocolo_evento, previsao_evento
     } = req.body
 
     await Evento.create(req.body)
