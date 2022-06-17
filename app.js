@@ -1,3 +1,5 @@
+require ('dotenv/config');
+
 const express = require("express");
 var cors = require('cors');
 
@@ -18,7 +20,7 @@ app.use((req, res, next) => {
 app.use('/evento', evento);
 
 
-app.listen(8080, () => {
+app.listen(process.env.PORT || 8083, () => {
     console.log("Servidor iniciado com sucesso");
 });
 
