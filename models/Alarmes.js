@@ -2,54 +2,42 @@ const Sequelize = require('sequelize');
 
 const db = require('./db');
 
-const Evento = db.define('eventos',{
-    id_evento:{
+const Alarmes = db.define('alarmes',{
+    id:{
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    status_evento:{
+    interface:{
         type: Sequelize.STRING,
         allowNull: false,
     },
-    cidade_evento:{
+    ip_switch:{
         type: Sequelize.STRING,
         allowNull: false
     },
-    ponto_evento:{
+    cidade:{
         type: Sequelize.STRING,
         allowNull: true
     },
-    energia_evento:{
+    status:{
         type: Sequelize.STRING,
         allowNull: true
     },
-    endereco_evento:{
+    data_alarme:{
         type: Sequelize.STRING,
         allowNull: false
     },
-    afeta_evento:{
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    data_evento:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    protocolo_evento:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    previsao_evento:{
+    observacao:{
         type: Sequelize.STRING,
         allowNull: false
     },
 
 });
 
-Evento.sync();
+Alarmes.sync();
 
-module.exports = Evento;
+module.exports = Alarmes;
 
 

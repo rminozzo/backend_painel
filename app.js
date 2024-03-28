@@ -3,7 +3,7 @@ require ('dotenv/config');
 const express = require("express");
 var cors = require('cors');
 
-const evento = require("./controller/evento")
+const alarme = require("./controller/alarme")
 
 const app = express();
 
@@ -17,10 +17,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/evento', evento);
+app.use('/alarme', alarme);
 
 
-app.listen(process.env.PORT || 8083, () => {
+app.listen(8083, () => {
     console.log("Servidor iniciado com sucesso");
 });
 

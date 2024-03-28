@@ -1,31 +1,31 @@
 const express = require("express");
 var router = express.Router();
 
-const Evento = require('../models/Eventos');
+const Alarme = require("../models/Alarmes");
 
-//LISTAR TODOS OS EVENTOS
+//LISTAR TODOS OS ALARMES
 router.get("/listar-todos/:page", async (req, res) => {
 
     const { page = 1 } = req.params;
 
-    const limit = 6;
+    const limit = 15;
     var lastPage = 1;
 
-    const countEvent = await Evento.count();
+    const countEvent = await Alarme.count();
     
     if(countEvent === null){
         return res.status(400).json({
             erro: true,
-            mensagem: "Erro: Nenhum evento encontrado!"
+            mensagem: "Erro: Nenhum Alarme encontrado!"
         });
     }else{
         lastPage = Math.ceil(countEvent / limit);
 
     }
 
-    await Evento.findAll({
-          attributes: ['id_evento','cidade_evento', 'status_evento', 'data_evento', 'previsao_evento'],
-          order: [['data_evento','DESC']],
+    await Alarme.findAll({
+          attributes: ['id','ip_switch', 'interface', 'data', 'status'],
+          order: [['data','DESC']],
           offset: Number((page * limit)-limit),
           limit: limit
     })
@@ -45,42 +45,40 @@ router.get("/listar-todos/:page", async (req, res) => {
     });
 });
 
-//CADASTRA EVENTO
-router.post("/evento", async (req, res) => {
+//CADASTRA ALARME
+router.post("/addalarme", async (req, res) => {
     const {
-        status_evento, cidade_evento, ponto_evento,
-        energia_evento, endereco_evento,
-        afeta_evento, data_evento,
-        protocolo_evento, previsao_evento
+        ip_switch, interface, cidade,
+        data, status, obs
     } = req.body
 
-    await Evento.create(req.body)
+    await Alarme.create(req.body)
         .then(() => {
             return res.json({
                 erro: false,
-                mensagem: "Evento Cadastrado com Sucesso!"
+                mensagem: "Alarme Cadastrado com Sucesso!"
             });
 
         }).catch(() => {
             return res.status(400).json({
                 erro: true,
-                mensagem: "Erro, falha ao cadastrar evento!"
+                mensagem: "Erro, falha ao cadastrar Alarme!"
             });
 
         });
 
 });
 
-//LISTAR UM UNICO EVENTO
-router.get("/evento/:id_evento", async (req, res) => {
-    const { id_evento } = req.params;
+//LISTAR UM UNICO Alarme
+router.get("/alarme/:id", async (req, res) => {
+    const { id } = req.params;
 
-    await Evento.findByPk(id_evento)
-    .then((evento
+    await Alarme.findByPk(id)
+    .then((alarme
         ) => {
         return res.json({
             erro: false,
-            evento
+            alarme
         })
 
     }).catch(() => {
@@ -92,15 +90,15 @@ router.get("/evento/:id_evento", async (req, res) => {
     
 })
 
-//EDITAR EVENTO
-router.put("/evento", async (req, res) => {
-    const { id_evento } = req.body;  
+//EDITAR ALARME
+router.put("/editalarme", async (req, res) => {
+    const { id } = req.body;  
     
-    await Evento.update(req.body, {where: {id_evento}})
+    await Alarme.update(req.body, {where: {id}})
     .then(() => {
         return res.json({
             erro: false,
-            mensagem: "Evento editado com sucesso!"
+            mensagem: "Alarme editado com sucesso!"
         });
 
     }).catch(() => {
@@ -111,15 +109,15 @@ router.put("/evento", async (req, res) => {
     });
 });
 
-//APAGAR EVENTO
-router.delete("/evento/:id_evento", async (req, res) => {
-    const { id_evento } = req.params;
+//APAGAR ALARME
+router.delete("/delalarme/:id", async (req, res) => {
+    const { id } = req.params;
 
-    await Evento.destroy({ where: { id_evento } })
+    await Alarme.destroy({ where: { id } })
         .then(() => {
             return res.json({
                 erro: false,
-                mensagem: "Evento apagado com sucesso!"
+                mensagem: "Alarme apagado com sucesso!"
             });
         }).catch(() => {
             return res.status(400).json({
